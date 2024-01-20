@@ -1,0 +1,285 @@
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+<meta name="description" content="description"/>
+<meta name="keywords" content="keywords"/> 
+<meta name="author" content="author"/> 
+<link rel="stylesheet" type="text/css" href="../default.css" media="screen"/>
+<title>Light</title>
+</head>
+
+<body>
+
+<div class="container">
+
+	<div class="navigation">
+
+		<div class="title">
+			<h1>Charles-Elie Rabier</h1>
+			<h2>welcome to my home page</h2>
+		</div>
+
+		
+		<a href="articles.html">Articles/Softwares/Conferences</a>
+		<a href="../index.html">Welcome</a>
+		<div class="clearer"><span></span></div>
+
+	</div>
+
+	<div class="holder_top"></div>
+
+	<div class="holder">
+
+
+<center><font size="5" color="#8A2BE2">Network inference with SnappNet</font> </center>
+
+<p><p>
+ SnappNet is a new Bayesian method that directly relies on DNA sequences. 
+Our method is implemented in <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003537">  BEAST 2 </a> (Bouckaert et al., 2014)
+, an improved version of the popular 
+ version BEAST 1.x dedicated to Bayesian evolutionary analyses. 
+Our SnappNet package is built on two BEAST packages, <a href="https://academic.oup.com/mbe/article/29/8/1917/1045283"> Snapp </a> (Bryant et al, 2012),
+and  <a href="https://academic.oup.com/mbe/article/35/2/504/4705834"> SpeciesNetwork </a> (Zhang et al., 2017). 
+ It incorporates the novel MCMC operators of  <a href="https://academic.oup.com/mbe/article/35/2/504/4705834"> SpeciesNetwork </a> to move through the network space,
+ and also benefits from operators specific to the mathematical model behind <a href="https://academic.oup.com/mbe/article/29/8/1917/1045283"> Snapp  </a> (e.g. population sizes,
+ mutation rates ...). We refer to our webpage on our simulator  <a href="SimSnapNet.html"> SimSnappNet </a>, for informations regarding the stochastic model used in SnappNet.
+ Contrary to SimSnappNet, SnappNet imposes the constraint 2uv/(u+v)=1 .
+
+<br><center><img src="figuresSnapNet/PictureBeast.jpg" width="200" height="70">
+</center>
+
+<center><br><h2> About the 16 MCMC operators </h2> </center>
+
+<h1> Topological operator :  </h1>
+<p>
+<font size="1" color="#0080ff"> addReticulation : </font> to add a reticulation node  <br>
+<font size="1" color="#0080ff"> deleteReticulation : </font> to delete a reticulation node <br>
+<font size="1" color="#0080ff"> flipReticulation : </font>  to flip a reticulation edge <br>
+<font size="1" color="#0080ff"> relocateBranch : </font> to relocate a branch <br> 
+<font size="1" color="#0080ff"> relocateBranchNarrow : </font>  <br>
+
+<h1> Other operators :  </h1>
+<p>
+<font size="1" color="#0080ff"> ChangeUAndV: </font>  to change the mutation rate values u
+ (from red to green) and v (from green to red), under the constraint 2uv/(u+v)=1. <br>
+<font size="1" color="#0080ff"> ChangeGamma:</font> to change the coalescence rate Gamma associated to a network branch. By definition, in the model, Gamma=2/Theta, where
+Theta denotes the population size
+<br>
+<font size="1" color="#0080ff">ChangeAllGamma: </font> to change  coalescence rates Gamma of all network branches.  <br>
+<font size="1" color="#0080ff">TurnOverScale: </font> to change the value of the parameter nu/lambda  linked the birth-hybridization process
+ (nu: hybridization rate, lambda: speciation rate) <br>
+<font size="1" color="#0080ff"> divrRateScale: </font> to change the value of the parameter 
+lambda-nu linked to the birth-hybridization process <br>
+<font size="1" color="#0080ff">  gammaProbUniform: </font> to change the hybridization probability at a reticulation node chosen at random 
+(among all reticulation nodes) <br>
+<font size="1" color="#0080ff">  gammaProbRndWalk: </font> to change the value of the hybridization probability (at a random reticulation node) by applying
+a random walk to the logit of gamma <br>
+<font size="1" color="#0080ff">  originMultiplier: </font> to change origin height of the network <br>
+<font size="1" color="#0080ff"> networkMultiplier: </font> to change internal node heights using a multiplier <br>
+<font size="1" color="#0080ff">  NodeUniform: </font> to select randomly an internal network node and to move its height uniformly <br>
+<font size="1" color="#0080ff">  NodeSlider: </font> to select randomly an internal network node and to move its height using a sliding window <br>
+
+<br><h1> Operators in the Xml File </h1> 
+
+<font size="1" color="#ff00ff"> "weight" refers to the weight of the operator, it will be scaled by the total weights (over all operators).
+At each MCMC step, an operator is chosen randomly according to the rescaled weights.</font> <br>
+
+&lt; operator id='divrRateScale:species' spec='ScaleOperator' parameter='@netDivRate:species' scaleFactor='0.5' weight='10.0' &gt;  <br>
+&lt; operator id='turnOverScale:species' spec='ScaleOperator' parameter='@turnOverRate:species' scaleFactor='0.5' weight='10.0' &gt;  <br>
+&lt; operator id='gammaProbUniform:species' spec='speciesnetwork.operators.GammaProbUniform' speciesNetwork='@network:species' weight='10.0' &gt;  <br>
+&lt; operator id='gammaProbRndWalk:species' spec='speciesnetwork.operators.GammaProbRndWalk' speciesNetwork='@network:species' weight='10.0' &gt;  <br>
+&lt; operator id='originMultiplier:species' spec='speciesnetwork.operators.OriginMultiplier' speciesNetwork='@network:species' origin='@originTime:species' weight='0.0' &gt;  <br>
+&lt; operator id='addReticulation:species' spec='speciesnetwork.operators.AddReticulationGH' speciesNetwork='@network:species' weight='10.0' coalescenceRate='@coalescenceRate' &gt;  <br>
+&lt; operator id='deleteReticulation:species' spec='speciesnetwork.operators.DeleteReticulationGH' speciesNetwork='@network:species' weight='10.0'  coalescenceRate='@coalescenceRate' &gt;  <br>
+&lt; operator id='networkMultiplier:species' spec='speciesnetwork.operators.MyNetworkMultiplierWithoutGeneTrees' speciesNetwork='@network:species' origin='@originTime:species' weight='5.0' &gt;  <br>
+&lt; operator id='flipReticulation:species' spec='speciesnetwork.operators.FlipReticulation' speciesNetwork='@network:species' weight='10.0' &gt;  <br>
+&lt; operator id='relocateBranch:species' spec='speciesnetwork.operators.RelocateBranch' speciesNetwork='@network:species' weight='30.0' &gt;  <br>
+&lt; operator id='nodeSlider:species' spec='speciesnetwork.operators.NodeSlider' speciesNetwork='@network:species' origin='@originTime:species' isNormal='true' sigma='0.005' weight='10.0' &gt;  <br>
+&lt; operator id='NodeUniform:species' spec='speciesnetwork.operators.NodeUniform' speciesNetwork='@network:species' weight='10.0' &gt;  <br>
+&lt; operator id='relocateBranchNarrow:species' spec='speciesnetwork.operators.RelocateBranchNarrow' speciesNetwork='@network:species' weight='10.0' &gt;  <br>
+&lt; operator id='ChangeUAndV' spec='snapp.operators.MutationMover' u='@u' v='@v' window='0.1'  weight='0' &gt;  <br>
+&lt; operator id='ChangeGamma' spec='snapp.operators.GammaMoverGH'  scale='0.5' weight='10' coalescenceRate='@coalescenceRate' &gt;  <br>
+&lt; operator id='ChangeAllGamma' spec='snapp.operators.GammaMoveAllGH'  scale='0.5' weight='10' coalescenceRate='@coalescenceRate' &gt;  <br>
+
+<br><h1> About priors in the Xml File </h1> 
+
+	&lt; distribution id='prior' spec='util.CompoundDistribution' &gt; <br>
+			&lt; distribution id='networkPrior' spec='speciesnetwork.BirthHybridizationModel' network=<font size="1" color="#ff4000">'@network:species' </font>
+ netDiversification=<font size="1" color="#00bfff">'@netDivRate:species' </font> turnOver=<font size="1" color="#ff00ff">'@turnOverRate:species' </font> betaShape='1.0'/&gt; <br>
+			 <font size="1" color="#00bfff"> &lt; prior id='networkOrigin' name='distribution' x='@originTime:species'&gt; <br>
+				  &lt; Exponential id='exponential.0' name='distr' mean='0.1'/&gt; <br>
+			 &lt; /prior &gt; <br>
+			 &lt; prior id='netDivPrior' name='distribution' x='@netDivRate:species'&gt; <br>
+				 &lt; Exponential id='exponential.01' name='distr' mean='10.0'/&gt; <br>
+			&lt; /prior &gt;  </font> <br>
+			<font size="1" color="#ff00ff"> &lt; prior id='turnOverPrior' name='distribution' x='@turnOverRate:species'&gt; <br>
+				&lt; Beta id='betadistr.01' name='distr' alpha='1.0' beta='1.0'/&gt; <br>
+			&lt;/prior &gt; </font><br>
+			&lt; distribution spec='snaplikelihood.SnAPPriorGH' name='distribution' id='snapprior' kappa=<font size="1" color="#4000ff">'@kappa'</font>
+                        alpha=<font size="1" color="#4000ff">'@alpha'</font> beta=<font size="1" color="#4000ff">'@beta'</font> coalescenceRate=<font size="1" color="#4000ff">'@coalescenceRate'</font> /&gt; <br>
+		&lt; /distribution &gt; <br><br> 
+
+
+As a network prior, we used the birth hybridization process of Zhang et al. (MBE, 2017). The network prior depends on the speciation rate lambda, 
+on the hybridization rate nu and on the time of origin Tau0. Hyperpriors are imposed onto these parameters. <br>
+<font size="1" color="#00bfff">  In particular, an exponential distribution is used for the hyperparameters
+d:=lambda-nu and Tau0. </font>
+<font size="1" color="#ff00ff"> The hyperparameter
+ r:=nu/lambda is assigned a Beta distribution. </font>
+As its cousin Snapp, SnappNet considers a Gamma distribution as a prior on
+ population sizes Theta. This Gamma prior induces a prior on the colaescence rate <br> <br>
+
+
+<br><h1> About the network initialization in the Xml File </h1> 
+
+SnappNet require a species tree in newick format as input.
+SnappNet will first parse the species tree, and then transform it into a network. On teh example below, we consider a 4 species tree (R, A, B and C). <br>  
+
+&lt;init spec='beast.util.TreeParser' id=<font size="1" color="#00ff80">'newick:species'</font> IsLabelledNewick='true' adjustTipHeights='false' 
+newick='(((R:0.05,A:0.05):0.05,((C:0.05,D:0.05):0.025,B:0.075):0.025):0)'/&gt; <br> 
+&lt; init id='SNI' spec='speciesnetwork.MySpeciesNetworkInitializerWithoutEmbedding' estimate='false'
+ method='random' speciesNetwork=<font size="1" color="#ff4000">'@network:species' </font> origin=<font size="1" color="#00bfff">'@originTime:species' </font> &gt; <br>
+	&lt;/init &gt; <br> <br>
+The link between network:species and newick:species is done using statenode <br>
+&lt; stateNode id=<font size="1" color="#ff4000">'network:species'</font> spec='speciesnetwork.NetworkParser' tree=<font size="1" color="#00ff80">'@newick:species'</font> &gt; <br>
+&lt; /stateNode &gt; <br>
+
+<br><h1> About parameters in the Xml File </h1> 
+
+	&lt; parameter id='originTime:species' lower='0.0' name='stateNode' &gt; 0.1 &lt; /parameter &gt; <br>
+	Be careful, originTime:species is a scaling factor. If you do not want to scale anything it has to be set to the same value as origin (i.e. the height) of the network <br>
+	<br><br>
+
+	Starting value for the parameter lambda-nu of the birth-hybridization process <br>
+	&lt; parameter id='netDivRate:species' lower='0.0' name='stateNode'&gt; 2.0 &lt; /parameter &gt; <br>
+	Starting value for the parameter nu/lambda of the birth-hybridization process <br>
+	&lt; parameter id='turnOverRate:species' lower='0.0' upper='1.0' name='stateNode' &gt; 0.5 &lt;/parameter &gt; <br>
+	During the MCMC, these values will change as soon as the operators divrRateScale and TurnOverScale have weights different from 0.<br><br>
+
+	Starting values for the mutation rate parameters u (from red to green) and v (from green to red) <br>
+	&lt; parameter id='u' lower='0.0' upper='1.0' name='stateNode'&gt; 1.0 &lt;/parameter &gt; <br>
+	&lt; parameter id='v' lower='0.0' upper='1.0' name='stateNode'&gt; 1.0 &lt;/parameter &gt; <br> 
+	If the weight of the operator ChangeUAndV is equal to 0, SnapNet will run with these starting values during all the MCMC. <br>
+	Note that when u=1 and v=1, we have 2uv/(u+v)=1 (so these starting values satisfy the constraint). <br><br>
+
+	Starting value for the coalescence Rate <br>
+	&lt; parameter id=<font size="1" color="#4000ff">'coalescenceRate'</font> lower='0.0' upper='1.0' name='stateNode'&gt; 400 &lt;/parameter &gt; <br>
+        If the weight of the operators ChangeGamma or ChangeAllGamma are different from 0, the coalescence rate will change during the MCMC steps. <br><br>
+
+        Values for the parameters alpha and beta of the Gamma prior on population sizes <br>
+	&lt; parameter id=<font size="1" color="#4000ff">'alpha'</font> lower='0.0'  name='stateNode'&gt; 1.0 &lt;/parameter &gt; <br>
+	&lt; parameter id=<font size="1" color="#4000ff">'beta'</font> lower='0.0'  name='stateNode'&gt; 200.0 &lt;/parameter &gt; <br> 
+	There is a link between the coalescence rate, and the Gamma prior on population sizes Theta (cf. Snapp code, or our SnappNet preprint).
+        Indeed, this Gamma prior induces a prior on the colaescence rate <br> <br>
+
+	&lt; parameter id=<font size="1" color="#4000ff">'kappa'</font> lower='0.0'  name='stateNode'&gt; 34.6574 &lt;/parameter &gt; <br> 
+	In the current version, the parameter kappa is not handled by SnappNet. You can set this parameter to any value.<br>
+	In Snapp code, David Bryant used this parameter when the user did not want to use Gamma prior (
+ 	CIR process, Cox Ingersoll and Ross 1985, Econometrica).
+
+
+<br><h1> About the posterior computation in the Xml File </h1> 
+
+The logarithm of the posterior is computed thanks to the following command lines.
+It is the sum of the log prior and the log likelihood.
+ Note that it does not compute the normalization constant since it cancels out when computing ratios in the MCMC. <br><br>
+
+	&lt; distribution id='posterior' spec='util.CompoundDistribution' &gt; <br>
+		&lt; distribution id='prior' spec='util.CompoundDistribution' &gt; <br> 
+     		  ...... cf. the section on priors <br> 
+		&lt; /distribution &gt; <br> 
+		&lt; distribution id='likelihood' spec='speciesnetwork.SnAPTreeLikelihoodGH' data='@snapalignment' speciesNetwork='@network:species' mutationRateU=<font size="1" color="#4000ff">'@u' </font>  mutationRateV=<font size="1" color="#4000ff">'@v'</font> coalescenceRate=<font size="1" color="#4000ff">'@coalescenceRate'</font>&gt; <br> 
+		&lt; /distribution &gt;<br> 
+	&lt; /distribution &gt;<br> <br> 
+
+The likelihood is computed according to our new algorithm described in the SnappNet preprint. 4 steps are described below, on a network with 3 species (A, B and C). 
+Recall that it computes the likelihood of the data located at the leaves below the (most recent) purple line, given the parameter values at the purple line.
+
+<center>
+<img src="figuresSnapNet/Algo1.jpg" width="200" height="200"><img src="figuresSnapNet/Algo2.jpg" width="200" height="200"> <br>
+<img src="figuresSnapNet/Algo3.jpg" width="200" height="200"><img src="figuresSnapNet/Algo4.jpg" width="200" height="200">
+</center>
+
+<br><h1> Markov Chain length in the Xml File </h1> 
+You can specify the length of your markov chain here <br>
+        &lt; run id='mcmc' spec='MCMC' chainLength='8000000' storeEvery='1000' &gt; <br>
+
+
+<br><h1> Specifying outputs in the xml file </h1> 
+
+It will generate two files, named OutPut.xml.trace.log and OutPut.xml.species.networks. <br>
+ OutPut.xml.trace.log gives the log posterior, the log  likelihood, the log prior, and a few parameter values ... at some MCMC steps (depending on the logEvery parameter)<br>
+OutPut.xml.trace.log can be analyzed with the software <a href="http://beast.community/tracer"> Tracer</a> for some MCMC convergence diagnostics (ESS ...) <br>
+OutPut.xml.species.networks gives the networks sampled by the MCMC algorithm.
+ <br><br>
+
+
+	&lt; logger id='tracelog' fileName='OutPut.xml.trace.log' logEvery='1000' model='@posterior' sort='smart'&gt; <br>
+		 &lt; log idref='posterior'/&gt; <br>
+		 &lt; log idref='likelihood'/&gt; <br>
+		 &lt; log idref='prior'/&gt; <br>
+		 &lt; log idref='netDivRate:species'/&gt; <br>
+		 &lt; log idref='turnOverRate:species'/&gt; <br>
+		 &lt; log idref='originTime:species'/&gt; <br>
+		 &lt; log id='height:species' speciesNetwork='@network:species' spec='speciesnetwork.NetworkStatLogger'/&gt; <br>
+		 &lt; log idref='u'/&gt; <br>
+		 &lt; log idref='v'/&gt; <br>
+	&lt; /logger &gt; <br><br>
+
+The file OutPut.xml.trace.log will look like this ... <br>
+	
+<font size="1" color="#ff00bf">Sample</font>	<font size="1" color="#8000ff">posterior</font>	likelihood	prior	netDivRate:species	turnOverRate:species	originTime:species	network:species.height	network:species.length	u	v <br>
+<font size="1" color="#ff00bf">0</font>	<font size="1" color="#8000ff">-20956.14954243043</font> -20840.948358026966	-115.20118440346411	2.0	0.5	0.1	0.1	0.375	1.0	1.0 <br>
+<font size="1" color="#ff00bf">1000</font> <font size="1" color="#8000ff">-18500.83111922361</font> -18352.38628265643	-148.44483656718123	1.7987135434462311	0.9181762602687488	0.07400854142735232	0.07080470943227002	0.2230355170821629	1.0	1.0 <br>
+<font size="1" color="#ff00bf">2000</font> <font size="1" color="#8000ff">-18464.85564360678</font> -18276.372075560637	-188.48356804614372	12.778256969343165	0.8123931956935018	0.07334688998602774	0.07103265639852284	0.21626447931434026	1.0	1.0 <br>
+<br><br>
+As said before, the OutPut.xml.trace.log file can be analyzed with <a href="http://beast.community/tracer"> Tracer </a> to check the MCMC convergence. <br><br>
+<center>
+<img src="figuresSnapNet/TraceGraph.jpg" width="300" height="200">
+ </center>
+
+
+<br><br><br>
+	&lt; logger id='specieslog' fileName='OutPut.xml.species.networks' logEvery='1000' mode='tree'&gt; <br>
+		&lt;log id='networkLogger:species' spec='speciesnetwork.NetworkWithMetaDataLoggerGH' speciesNetwork='@network:species' coalescenceRate='@coalescenceRate'/&gt; <br>
+	 &lt;/logger &gt; <br><br><br>
+
+The file OutPut.xml.species.networks, on a 4 species network (R, A, B, C), will look like this (see below). Note that &Theta refers to the population size (for each branch), and it is equal to 2/Gamma, where
+ Gamma refers to the coalescence rate on that branch. Recall that branch lengths are in substitutions per site (i.e. genetic distance).<br><br>
+
+Begin trees;<br>
+<font size="1" color="#ff00bf">tree STATE_0</font> = (((R[&Theta=0.005]:0.05,A[&Theta=0.005]:0.05)[&Theta=0.005]:0.05,((C[&Theta=0.005]:0.05,D[&Theta=0.005]:0.05)[&Theta=0.005]:0.02500000000000001,B[&Theta=0.005]:0.07500000000000001)[&Theta=0.005]:0.024999999999999994)[&Theta=0.005]:0.0); <br>
+<font size="1" color="#ff00bf">tree STATE_1000</font> = ((R[&Theta=0.005947456651118153]:0.07080470943227002,(((B[&Theta=0.010029034645707471]:0.007745677351344019,(C[&Theta=0.01851053238761296]:0.0016005528501038264,D[&Theta=0.010124776378504487]:0.0016005528501038264)<br>S5[&Theta=0.01784858093528644]:0.006145124501240193)[&Theta=0.012943790011121026]:0.0026538835685392045)#H1[&Theta=0.0030579477165035454,gamma=0.36660153985935845]<br>:0.05326928044835476,(#H1[&Theta=0.00774444768220411]:0.008411026647937057,A[&Theta=0.016435616222157615]:0.01881058756782028)[&Theta=0.011270865817516337]:0.044858253800417705)[&Theta=0.009214217327898634]:0.007135868064032033)[&Theta=0.012120578660510327]:0.0032038319950822985);
+<br><br><br>
+
+	A screen logger which gives feedback on screen .... <br>
+	&lt; logger id='screenlog' logEvery='1000' model='@posterior'&gt; <br>
+		 &lt;log idref='posterior'/&gt; <br>
+		 &lt;log id='ESS.0' spec='util.ESS' arg='@posterior'/&gt; <br>
+		 &lt;log idref='likelihood'/&gt; <br>
+		 &lt;log idref='prior'/&gt; <br>
+	&lt;/logger &gt; <br><br>
+
+
+<center><br><h2>How to run SnappNet </h2> </center>
+java -jar SnappNetForSimSnappNet.jar -seed 4 myXmlFile.xml > stdout
+
+</div>
+
+<div class="webdesign"><p><a href="http://www.sarkis-webdesign.com/" title="Webdesign" class="web_design">Webdesign</a> service by Sarkis. <a
+href="http://freelancewebmarket.com/" title="Outsourcing" class="outsourcing">Outsourcing</a> by FreelanceWebmarket.</p></div>
+
+
+ <div class="footer">&copy; 2007 <a href="index.html">Website.com</a>. Valid <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &amp; <a
+href="http://validator.w3.org/check?uri=referer">XHTML</a>. <a href="http://templates.arcsin.se">Website template</a> by <a
+href="http://arcsin.se">Arcsin</a>
+
+
+ </div>
+
+</div>
+
+</body>
+
+</html>

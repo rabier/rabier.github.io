@@ -1,0 +1,257 @@
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+<meta name="description" content="description"/>
+<meta name="keywords" content="keywords"/> 
+<meta name="author" content="author"/> 
+<link rel="stylesheet" type="text/css" href="../default.css" media="screen"/>
+<title>Light</title>
+</head>
+
+<body>
+
+<div class="container">
+
+	<div class="navigation">
+
+		<div class="title">
+			<h1>Charles-Elie Rabier</h1>
+			<h2>welcome to my home page</h2>
+		</div>
+
+		
+		<a href="articles.html">Articles/Softwares/Conferences</a>
+		<a href="../index.html">Welcome</a>
+		<div class="clearer"><span></span></div>
+
+	</div>
+
+	<div class="holder_top"></div>
+
+	<div class="holder">
+
+
+<center><font size="5" color="#8A2BE2">Simulating data with SimSnappNet</font> </center>
+
+<p><p>
+Our C++ code "SimSnappNet" is build on the software "SimSnapp" written by David Bryant
+<p>D. Bryant, R. Bouckaert, J. Felsenstein,  N.A. Rosenberg, A. RoyChoudhury : <a href="https://academic.oup.com/mbe/article/29/8/1917/1045283"> 
+  Inferring Species Trees Directly from Biallelic Genetic Markers: Bypassing gene trees in a full coalescent analysis. </a> (Molecular Biology and Evolution, 
+Volume 29, Issue 8, 2012)
+</p>
+
+<p>
+<font size="3">
+<a href="../download/SimSnapNet/SimSnappNet.tar.gz"> download SimSnappNet </a></font>
+</p>
+
+
+<p><p>
+SimSnappNet generates SNPs data according to a Markovian process that evolved along gene tree branches.
+The gene tree is random and is obtained according to the Network Multispecies Colaescent Network (i.e. a coalescent process that evolves
+ inside a phylogenetic network).
+</p>
+
+<p>
+SimSnappNet requires a phylogenetic network in the 
+<a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-9-532"> extended newick format </a>, 
+ with branch lengths in substitution unit (see the remark at the bottom of this page). 
+Theta values (i.e. population sizes) are indicated in square brackets following node. 
+We used the following notation. The reticulation node is considered as a species, its name has to begin with #, followed by one single letter, 
+and the probability of going left. The sample size must be set to 0 for that node (see examples below!)
+Optional insert <scale> before the network to specify a branch length scaler.
+</p>
+
+After having generated data with SimSnappNet, you will have to change parameters of the xml file 
+ to be able to run SnappNet. By default, the xml is prepared for the second example below.
+
+Please, do not specify names to internal nodes (except the reticulation node), otherwise
+ it will cause problems in the xml file.
+
+
+<center><br><h2>How to run SimSnappNet </h2> </center>
+
+<p> SimSnap [-c]  [nsites] [seed] filename  </p>
+
+<br><h1> Flags are: </h1>
+
+<p> -c Include constant sites (default is to simulate only polymorphic sites, i.e. without -c it will generate polymorphic sites) </p>
+
+<p> nsites: number of sites </p>
+
+<p> seed: seed number for generating random data </p>
+
+<p> filename: see below </p>
+
+<br><h1> Input File Format </h1> 
+
+<p> number of species <br>
+
+ species1-name  sample-size   <br>
+
+ species2-name  sample-size  <br> 
+
+...
+
+species_n-name	sample-size  <br>
+
+mutation rate u mutation rate v <br>
+
+number of networks <br>
+
+network in extended newick format <br> </p>
+
+
+Since SimSnappNet deals with pointers and to use David Bryant's code in an efficient way, I used the following convention. <br>
+Be careful, in your network in extended newick format, the fake leaf (referring to the reticulation node) has to be the second element
+ in the cherry, e.g. (something,#H0.5) if we call the reticulation node #H0.5. <br>
+Besides, in your network in extended newick format, the internal reticulation node (above a node B), has to be in second place, e.g. 
+ (A,(B)#H0.5) and not ((B)#H0.5,A). In other words, the parent of A has two children, child 1 is A and child 2 is #H0.5.
+<br>
+Last, we have to mention that SimSnappNet can not handle loops, i.e. situations where the reticulation node has only one parent.
+
+
+<center><br><h1> First example </h1>  </center>
+
+<br> <p> 
+ Let us consider a network with 3 species, denoted A, B and C. Furthermore, on
+ this example, 2 lineages belong to each species.
+ Let us call #H0.5 the reticulation node of the following network. As previously said, we have to specify 
+that the sample size associated to this fake species is equal to zero. 0.5 is the probability of going on the
+left side. On this example, the mutation rates u and v are both equal to 1. </p>
+
+<br><center><img src="figuresSnapNet/3sepecies1retic.png" width="380" height="200">
+</center>
+<h1>
+4 <br>
+A 2 <br>
+B 2 <br>
+#H0.5 0 <br>
+C 2 <br>
+1.0 1.0 <br>
+1 <br>
+<1.0>((A[0.005]:0.035,(B[0.005]:0.012)#H0.5[0.005]:0.023)[0.005]:0.05,(C[0.005]:0.035,#H0.5[0.005]:0.023)[0.005]:0.05)[0.005]:0.1;<br>
+</h1> 
+
+Download the associated file <a href="../download/SimSnapNet/test_Net3species_A2B2C2">test_Net3species_A2B2C2</a>
+
+
+<center><br><h1> Second example </h1>  </center>
+
+<br> <p> 
+ Let us consider a network with 5 species, denoted C, R, Q, A and L. Furthermore, on
+ this example, 2 lineages belong to each species.
+ Let us call #H0.3 the reticulation node of the following network. As previously said, we have to specify 
+that the sample size associated to this fake species is equal to zero. 0.3 is the probability of going on the
+left side. On this example, the mutation rates u and v are both equal to 1. </p>
+
+<br><center><img src="figuresSnapNet/Network1BigFontWithLabRetic.png" width="380" height="200">
+</center>
+<h1>
+6 <br>
+C 2 <br>
+R 2 <br>
+Q 2 <br>
+A 2 <br>
+#H0.3 0 <br>
+L 2 <br>
+1.0 1.0 <br>
+1 <br>
+<1.0>(C[0.005]:0.08,((R[0.005]:0.007,(Q[0.005]:0.004)#H0.3[0.005]:0.003)[0.005]:0.035,
+((A[0.005]:0.006,#H0.3[0.005]:0.002)[0.005]:0.016,L[0.005]:0.022)[0.005]:0.02)[0.005]:0.038)[0.005]:0.1;<br>
+</h1> 
+
+
+Download the associated file <a href="../download/SimSnapNet/test_NetA_C2R2Q2A2L2">test_NetA_C2R2Q2A2L2</a>
+
+
+<center><br><h1> Third example </h1> </center>
+
+<br> <p> 
+An example with two reticulation nodes : #H0.3 and #E0.6 </p> 
+ 
+<br><center><img src="figuresSnapNet/NaklehNet2BigFontWithLabRetic.png" width="380" height="220">
+</center>
+<h1>
+7 <br>
+C 2 <br>
+R 2 <br>
+Q 2 <br>
+A 2 <br>
+#H0.3 0 <br>
+L 2 <br>
+#E0.6 0 <br>
+1.0 1.0 <br>
+1 <br>
+<1.0>(((R[0.005]:0.014,(Q[0.005]:0.004)#H0.3[0.005]:0.01)[0.005]:0.028,(((A[0.005]:0.003)#E0.6[0.005]:0.003,#H0.3[0.005]:0.002)[0.005]:0.016,L[0.005]:0.022)[0.005]:0.02)[0.005]:0.038,(C[0.005]:0.005,#E0.6[0.005]:0.002)[0.005]:0.075)[0.005]:0.1;<br>
+</h1> 
+
+Download the associated file <a href="../download/SimSnapNet/test_NetB_C2R2Q2A2L2">test_NetB_C2R2Q2A2L2</a>
+
+<center><br><h1> Fourth example </h1> </center>
+<br> <p> 
+Another example with two reticulation nodes : #H0.5 and #E0.5 </p> 
+<br><center><img src="figuresSnapNet/NaklehNetCWithLabelRetic-1.png" width="350" height="220">
+</center>
+<h1>
+7 <br>
+R 1 <br>
+A 1 <br>
+#E0.5 0 <br>
+B 5 <br>
+#H0.5 0 <br>
+C 5 <br>
+D 1 <br>
+1.0 1.0 <br>
+1 <br>
+<1.0>(R[0.005]:0.08,((A[0.005]:0.012,((B[0.005]:0.002,(C[0.005]:0.001)#E0.5[0.005]:0.001)[0.005]:0.002)#H0.5[0.005]:0.008)[0.005]:0.038,((D[0.005]:0.003,#E0.5[0.005]:0.002)[0.005]:0.017,#H0.5[0.005]:0.016)[0.005]:0.03)[0.005]:0.03)[0.005]:0.1;
+</h1> 
+
+Download the associated file <a href="../download/SimSnapNet/test_NetC_R1A1B5C5D1">test_NetC_R1A1B5C5D1</a>
+
+
+<center><br><h2>Extra informations on the stochastic model </h2> </center>
+
+<br><h1> Gene tree model </h1>
+
+For each site, the associated gene tree is obtained according to the Network Multispecies Colaescent Network model. 
+The process starts at the leaves of the network and goes backward in time, until all lineages coalesce. 
+At the beginning, coalescence occurs only between lineages that belong to the same species. 
+2 given lineages coalesce at rate 2mu/theta where theta denotes the population size parameter of that species. 
+ The parameter mu is equal to 2uv/(u+v) where u and v are mutation rates given in the input file.
+Assuming that k lineages belong to that species, the first coalescent time follows an exponential distribution 
+E(k(k-1)mu/theta), since the coalescence of each combination of 2 lineages is equiprobable.  
+When k=2, the expected coalescent time is theta/(2mu). theta/mu is the average number of mutations, separating 2 individuals. 
+
+
+<br><h1> Mutation model </h1>
+
+
+As in SNAPP, we consider biallelic markers and the colors red and green represent the two alleles. 
+Markers evolve along the gene tree branches, according to a continuous time Markov chain, where   
+u and v denote respectively the instantaneous rates of mutating from red to green, and from  green to red. 
+ Under this model, on a branch of length T, there are on average 2uvT/(u+v) mutations. 
+Then, the mutation rate mu is equal to 2uv/(u+v).
+Imposing the constraint 2uv/(u+v)=1, enables
+ to measure branch lengths in substitutions per site (i.e. genetic distance). 
+If you do not impose this constraint, a branch of length T will represent on average T times mu mutations.
+ Up to you !
+</div>
+
+<div class="webdesign"><p><a href="http://www.sarkis-webdesign.com/" title="Webdesign" class="web_design">Webdesign</a> service by Sarkis. <a
+href="http://freelancewebmarket.com/" title="Outsourcing" class="outsourcing">Outsourcing</a> by FreelanceWebmarket.</p></div>
+
+
+ <div class="footer">&copy; 2007 <a href="index.html">Website.com</a>. Valid <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &amp; <a
+href="http://validator.w3.org/check?uri=referer">XHTML</a>. <a href="http://templates.arcsin.se">Website template</a> by <a
+href="http://arcsin.se">Arcsin</a>
+
+
+ </div>
+
+</div>
+
+</body>
+
+</html>

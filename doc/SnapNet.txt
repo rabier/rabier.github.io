@@ -1,0 +1,19 @@
+Logiciel SnapNet
+
+Ce qu il nous faut ...
+
+Lister tous les opérateurs de SnapNet ...
+
+Expliquer le xml ... avec l entete, etc ...
+
+
+Expliquer les fichiers de sorties ...
+
+
+
+Expliquer l'algo en mettant mes dessins des talks
+
+Peut etre mettre l explication du modèle derriere SnapNet !!! Piquer cela au simulateur.
+
+
+mettre pour snapSimNet les versions des templates pour chacun des exemples ...

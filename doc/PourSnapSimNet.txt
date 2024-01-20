@@ -1,0 +1,60 @@
+
+Le vrai nom c est SimSnappNet !!!
+
+First example:
+
+give simSnapp.cpp
+et le fichier 
+test_NetA_C2R2Q2A2L2
+
+Second example:
+
+give simSnapp.cpp
+et le fichier 
+test_NetB_C2R2Q2A2L2
+
+
+Third example:
+
+give simSnapp.cpp
+et le fichier 
+test_NetC_R1A1B5C5D1
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+dire que c est juste pour les graphes planaires ???  OK j ai redigé qqchose
+
+Graphe: Mettre des labels sur les noeuds de reticulation  : OK
+
+Expliquer un peu le modèle: lien scaling and u v     OK
+
+xml : template , voir les parametres par defaut ...
+mettre des fichiers en ligne ...
+
+IL RESTE à mettre les template par defaut des exemples !!!
+
+
+lien vers le bioinformatics ??? OK
+
+
+donner d autres exemples ??? On verra ...  OK
+
+
+
+Nom de SnapSim ???
+un p ou 2 ???   OK
+
+
+- faire page web pour SnapNet !!!
+
+
+
+
+
+
+
+
+
+
+

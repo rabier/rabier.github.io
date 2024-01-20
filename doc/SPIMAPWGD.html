@@ -1,0 +1,421 @@
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+<meta name="description" content="description"/>
+<meta name="keywords" content="keywords"/> 
+<meta name="author" content="author"/> 
+<link rel="stylesheet" type="text/css" href="../default.css" media="screen"/>
+<title>Light</title>
+</head>
+
+<body>
+
+<div class="container">
+
+	<div class="navigation">
+
+		<div class="title">
+			<h1>Charles-Elie Rabier</h1>
+			<h2>welcome to my home page</h2>
+		</div>
+
+		
+		<a href="articles.html">Articles/Softwares/Conferences</a>
+		<a href="../index.html">Welcome</a>
+		<div class="clearer"><span></span></div>
+
+	</div>
+
+	<div class="holder_top"></div>
+
+	<div class="holder">
+
+
+<center><font size="5" color="#8A2BE2">Inference from Gene Count data: WGDgc</font> </center>
+
+<p><p>
+The R package "WGDgc" uses gene count data (number of gene copies) across multiple gene families and multiple species. The background process of gene duplications and gene losses is modelled by a birth and death process. In addition, whole genome duplications (WGD) and whole genome triplications (WGT) are modelled with an instantaneous duplication (or triplication) of all genes present at the time of event, with a probability of retaining the extra gene (or of retaining one of both extra copies for whole genome triplications).
+
+The duplication (birth) rate, loss (death) rate and retention rate at each WGD or WGT event are estimated simultaneously using maximum likelihood. A shifted geometric prior distribution is used for the unobserved number of genes at the root. The likelihood can be conditioned on the data collection process. 
+This method is fast. It is further explained here:
+
+<p>Rabier C-E, Ta T., Ane C. : <a href="http://mbe.oxfordjournals.org/content/early/2014/01/13/molbev.mst263.abstract?keytype=ref&ijkey=Ls8mHjKto38Tzur">  Detecting and locating Whole Genome Duplications on a phylogeny: a probabilistic approach </a> (Molecular Biology and Evolution, 2014, doi:10.1093/molbev/mst263)
+</p>
+<p>
+<font size="3">R package download</font>
+</p>
+
+<p>Version 0.9 :<a href="../download/GeneCount/WGDgc_0.9.tar.gz"> R package </a>
+              &nbsp &nbsp &nbsp <a href="../download/GeneCount/WGDgc-manual09.pdf"> Documentation </a>
+
+<br>
+Version 1.0 : <a href="../download/GeneCount/WGDgc_1.0.tar.gz"> R package </a>
+              &nbsp &nbsp &nbsp <a href="../download/GeneCount/WGDgc-manual10.pdf"> Documentation </a>
+<br>
+Version 1.1 : <a href="http://www.stat.wisc.edu/~ane/wgd/WGDgc_1.1.tar.gz"> R package </a> 
+             &nbsp &nbsp &nbsp <a href="http://www.stat.wisc.edu/~ane/wgd/WGDgc-manual_1.1.pdf"> Documentation </a>
+<br>
+Version 1.2 : <a href="http://www.stat.wisc.edu/~ane/wgd/WGDgc_1.2.tar.gz"> R package </a>
+&nbsp &nbsp &nbsp <a href="http://www.stat.wisc.edu/~ane/wgd/WGDgc-manual_1.2.pdf"> Documentation </a>
+</p>
+<br>
+
+<p>
+<font size="3"> R package installation </font>
+</p>
+
+<p>
+WGDgc depends on the R packages ape, phylobase and phyext. <br>
+You can install ape and phylobase from CRAN using the R command install.packages(c("ape","phylobase")) . <br>
+The phyext package is no longer on CRAN, but you can install it from source like this: <br>
+
+install.packages("https://cran.r-project.org/src/contrib/Archive/phyext/phyext_0.0.1.tar.gz", repos = NULL, type="source") <br>
+Finally, you can install WGDgc also from source, and ask R to do the download for you like this: <br>
+install.packages("http://www.stat.wisc.edu/~ane/wgd/WGDgc_1.2.tar.gz", repos = NULL, type="source") <br>
+</p>
+
+
+<center><font size="5" color="#8A2BE2">Inference from Sequence data: SPIMAPWGD</font> </center>
+
+<p><p>
+This method aims to detect whole genome duplications (WGDs) and to reconstruct the gene trees.
+It is much slower than the method based on gene count data above (see Rabier et al. 2014), for detecting WGDs. 
+However, it reconstructs the gene tree and SPIMAPWGD can be used to improve gene tree estimation when whole genome duplications have occurred in the group of interest. It is a version of the software SPIMAP of Matthew Rasmussen and Manolis Kellis, which incorporates WGD events.
+For some background, we refer to the paper "A Bayesian approach for fast and accurate gene tree reconstruction", Rasmussen and Kellis, Mol. Biol. Evol. 28(1):273-290.2011.
+ Some documentation about the SPIMAP package is present 
+<a href="http://compbio.mit.edu/spimap/pub/spimap/doc/spimap-manual.html">here</a>.
+SPIMAPWGD uses the same arguments as SPIMAP, and also some new arguments. Here, you will find some explanations on how to run SPIMAPWGD.
+Some examples are given at the end of the page. A version of SPIMAPWGD 
+is available on my <a href="https://github.com/rabier/SPIMAPWGD/tree/branchrabier"> github </a>.
+</p>
+
+<p>SPIMAPWGD is further explained here:<br>
+Rabier C-E, Ta T., Ane C. : <a href="http://mbe.oxfordjournals.org/content/early/2014/01/13/molbev.mst263.abstract?keytype=ref&ijkey=Ls8mHjKto38Tzur">  Detecting and locating Whole Genome Duplications on a phylogeny: a probabilistic approach </a> (Molecular Biology and Evolution, 2014, doi:10.1093/molbev/mst263)
+</p>
+
+		<center><br><h1>Arguments</h1> </center>
+
+
+<br><h1>input/output </h1>
+
+<p> -a,--align : sequence alignments in fasta format </p>
+
+<p> -S,--smap : gene to species map   </p>
+
+<p>  -s,--stree : species tree in newick format </p>
+
+<p>  -p,--param : substitution rate parameters file </p>
+
+<p> -o,--output : prefix for all output filenames </p>
+
+<p> -r,--recon : output reconciliation  (optional argument) </p>
+
+<p>Note that SPIMAPWGD will generate the following files : *.tree  (final gene tree),  *.duplosslastree 
+(total losses, losses at WGD, total duplications, duplications at WGD for final gene tree), 
+*.completeloglikelihood  (approximated loglikelihood), and *.topologyprob (topology prior).</p>
+
+
+
+<br><h1>sequence model </h1>
+
+<p> -k,--kappa : transition/transversion ratio (default estimate)</p>
+
+<p> -f,--bgfreq : base frequencies (A, C, T, G) (default estimate)</p>
+
+
+<br><h1>dup loss model </h1>
+
+
+<p> -D,--duprate : birth rate </p>
+
+<p> -L,--lossrate : death rate </p>
+
+<p> -LR,--lineagesatroot : parameter of the prior geometric distribution for the number of lineages at the root. Inverse of the average number of lineages at the root. 
+(default 0.95, i.e. an average of 1.053 lineages at the root) </p>
+
+<p> -OB,--observingsomething : 1 for conditioning on observing something, 2 for at least one gene on each side of the root (default 1)</p>
+
+
+<br><h1>search options </h1>
+
+
+<p> -i,--niter : number of iterations (default 100)</p>
+
+<p> -g,--proposal-gene-topology : 0 for NNI, 1 for SPR, 2 for SubtreeSlide (default 2) </p>
+
+<! --mcmc : 0 for Maximum a Posteriori, 1 for MCMC (default 0)  >
+
+
+<br><h1>help informations </h1>
+
+
+<p> -V,--verbose : 0 for quiet, 1 for low, 2 for medium, 3 for high </p>
+
+<p> --log : specify a file name for saving log information
+
+<p> -h, --help : display help information </p>
+
+<p> --informationduploss : output total losses, losses at WGD, total duplications, duplications at WGD (corresponding to some sampled trees)</p>
+
+<p> --treesampled : output sampled trees (warning : does not give the full list)</p>
+
+
+
+
+<center><br><h1>How to include a WGD in the species tree</h1> </center>
+
+<p> SPIMAPWGD requires a species tree in the Newick format. In order to include a Whole Genome Duplication in the species tree,
+just add a supplementary node called "WGDp" where p is the value of the probability of loss at the WGD.
+</p> 
+
+<p> For instance, if we consider a species tree with 4 taxon (A,B,C,D), and if we want to specify that a WGD, with probability of loss 0.10,
+ is present just at the middle of the branch located before the speciation A|B, the input file corresponding to the figure below will be
+ </p> 
+
+<p> (((
+(A:7.06,
+B:7.06
+):2.50)WGD0.10:2.50,
+C:12.06
+):5.97,
+D:18.03
+)
+;
+ </p> 
+
+
+</p>
+
+<br><center><img src="figureSPIMAPWGD/speciestreeforsimulations.jpg" width="400" height="300">
+</center>
+<br>
+
+<p> 
+The software can handle several WGDs with different probability of loss. However, each WGD has to be located on a different branch of the species tree.
+So, if we want to add another WGD (with probability of loss 0.12) on the branch located just above the previous WGD (cf. figure below), the input file will be
+</p> 
+
+
+<p> (((((A:7.06,B:7.06):2.50)WGD0.10:2.50,C:12.06):1.99)WGD0.12:3.98,D:18.03); </p> 
+
+
+<br><center><img src="figureSPIMAPWGD/speciestreeforsimulations2WGDnotmiddle.png" width="400" height="300">
+</center>
+<br>
+
+
+
+<center><br><h1>How to handle substitution rates</h1> </center>
+<p> 
+We just have to use the same input file as in SPIMAP. In other words, we do not have to take into account that some WGD are present inside
+ the species tree
+</p> 
+
+
+<center><br><h1>About the reconciliation</h1> </center>
+
+<p>
+As in the original version of SPIMAP, the software gives the reconciliation (with the option -r).
+It now specifies which nodes are reconciled at the WGD. 
+Note that when several WGDs are located in the species tree, before interpreting the reconciliation file (.recon),
+we have to know the code associated to each WGD. This code is given on the screen when we run SPIMAPWGD. In particular, SPIMAPWGD describes the 2 WGDs of the figure above in the following way :
+</p> 
+
+
+<p>
+WGD event number0: <br>
+ 	child node : n5<br>
+        loss probability:  0.100000 <br>
+        percent distance:  0.500000 <br>
+        total distance:    5.000000 <br>
+        distance 'before': 2.500000 <br>
+        distance 'after':  2.500000 <br><br>
+WGD event number1: <br>
+	child node : n4<br>
+        loss probability:  0.120000 <br>
+        percent distance:  0.666667 <br>
+        total distance:    5.970000 <br>
+        distance 'before': 3.980000 <br>
+        distance 'after':  1.990000 <br>
+</p>
+
+<p>
+'Total distance' gives the length of the branch on which the WGD is placed.<br>
+'Percent distance' indicates where the WGD is located on the branch, as a percentage of the total distance starting from
+ the parent node. <br>
+Distances 'before'/'after' are the distances before/after the WGD. <br>
+</p>
+
+<p>
+We can see that the oldest WGD has the number 1, whereas the most recent has the number 0. 
+</p>
+
+<p>
+Recall that the reconciliation file (.recon) has 3 columns. 
+The first column refers to the gene tree whereas the second column refers to the species tree.
+On each row, a node of the gene tree (first column) is reconciled to a node of the species tree (second column).
+The third column indicates the corresponding evolutionary event : 'gene', 'speciation', 'dup' (for duplication), 'WGD'.
+ Note that when the evolutionary event is a WGD, column 2 also gives the number associated the WGD.
+</p>
+
+
+
+<h2>Example on reconciliation using our species tree with only one WGD </h2>
+<p>We give here an example of gene tree (simulated from our species tree with only one WGD) obtained by SPIMAPWGD, and also some rows of the reconciliation file (.recon) : </p>
+<br><center><img src="figureSPIMAPWGD/mytreeexample1.png" width="450" height="475">
+</center>
+
+<center>
+<table border="1" bordercolor="#9900CC" style="background-color:#CC99FF" width="50%" cellpadding="3" cellspacing="3">
+	<tr>
+		<td>A_11</td>
+		<td>A</td>
+		<td>gene</td>
+	</tr>
+	<tr>
+		<td>B_12 </td>
+		<td>B</td>
+		<td>gene</td>
+	</tr>
+	<tr>
+		<td>B_15</td>
+		<td>B</td>
+		<td>gene</td>
+	</tr>
+	<tr>
+		<td>C_36</td>
+		<td>C</td>
+		<td>gene</td>
+	</tr>
+	<tr>
+		<td>n4 </td>
+		<td>n5</td>
+		<td>spec</td>
+	</tr>
+	<tr>
+		<td>n6</td>
+		<td>D</td>
+		<td>dup</td>
+	</tr>
+	<tr>
+		<td>n8</td>
+		<td>WGD_at0</td>
+		<td>WGD</td>
+	</tr>
+	<tr>
+		<td>n3</td>
+		<td>WGD_at0</td>
+		<td>WGD</td>
+	</tr>
+	<tr>
+		<td>...</td>
+		<td>...</td>
+		<td>...</td>
+	</tr>
+	
+</table>
+</center>
+<br>
+<p>SPIMAPWGD finds two duplications at the WGD. n8 and n3 are the nodes of the gene tree that map at the WGD (cf. figure). 
+Note that file .duplosslasttree gives the total number of losses, the number of losses at the WGD,
+ the total number of duplications and the number of duplications at the WGD. </p>
+
+<h2>Example of reconciliation using our species tree with two WGDs </h2>
+<br>
+<center><img src="figureSPIMAPWGD/mytreeexample2.png" width="500" height="500">
+</center>
+<br>
+
+
+<center>
+<table border="1" bordercolor="#9900CC" style="background-color:#CC99FF" width="50%" cellpadding="3" cellspacing="3">
+	<tr>
+		<td>A_10</td>
+		<td>A</td>
+		<td>gene</td>
+	</tr>
+	<tr>
+		<td>B_11 </td>
+		<td>B</td>
+		<td>gene</td>
+	</tr>
+	<tr>
+		<td>C_12</td>
+		<td>C</td>
+		<td>gene</td>
+	</tr>
+	<tr>
+		<td>n3</td>
+		<td>WGD_at0</td>
+		<td>WGD</td>
+	</tr>
+	<tr>
+		<td>n2</td>
+		<td>WGD_at1</td>
+		<td>WGD</td>
+	</tr>
+	<tr>
+		<td>n8</td>
+		<td>WGD_at0</td>
+		<td>WGD</td>
+	</tr>
+	<tr>
+		<td>... </td>
+		<td>...</td>
+		<td>...</td>
+	</tr>
+</table>
+</center><br>
+<p>SPIMAPWGD finds three duplications at the WGDs. n2 is the node of the gene tree which maps to the WGD number 1.
+n3 and n8 are the nodes which maps to the WGD number 0. 
+We recall that WGD number 1 is the oldest WGD whereas WGD number 0 is the most recent.
+
+</p>
+
+
+
+<center><br><h1>Examples on how to run SPIMAPWGD</h1> </center>
+
+
+<p>For more details, download 
+<a href="../download/SPIMAPWGD/TUTORIAL.tar.gz">TUTORIAL.tar.gz</a> and open the file README.sh. 
+You will find the same examples as the ones present on this page. In the folder "dnawith1WGD" (resp. "dnawith2WGD"), you will find 20 data sets, generated with the species tree with one WGD (resp. two WGDs). 
+</p>
+
+
+
+<center><br><h1>Some results using a data set of 16 fungal species</h1> </center>
+
+<p> As explained in the paper, we ran SPIMAPWGD on a data set of 16 fungal species.
+We considered the same gene clusters 
+as in Butler et al. (Nature 2009), that is to say 9209 gene families, downloaded from
+<a href="http://compbio.mit.edu/candida"> http://compbio.mit.edu/candida </a>. The fungal species tree comes also from this recent
+study. The WGD was placed at the middle of the branch (arbitrarily) of the
+species tree where a putative WGD happened in yeast. An example of species tree with probability of loss 0.4 can be downloaded 
+<a href="../download/SPIMAPWGD/fungalspeciestree.stree">here</a>. 
+You will also find 
+<a href="../download/SPIMAPWGD/wholetableduploss.txt">a table</a> which summarizes our results, and the gene trees found for each family 
+ (gene family sizes: <a href="../download/SPIMAPWGD/rundirGROUP3to40.tar.gz">3 to 40</a>, 
+<a href="../download/SPIMAPWGD/rundirGROUP41to56.tar.gz">41 to 56</a>, 
+<a href="../download/SPIMAPWGD/rundirGROUP57to130.tar.gz"> 57 to 130 </a>, <a href="../download/SPIMAPWGD/readme.txt">readme.txt</a>). 
+
+
+</div>
+
+<div class="webdesign"><p><a href="http://www.sarkis-webdesign.com/" title="Webdesign" class="web_design">Webdesign</a> service by Sarkis. <a
+href="http://freelancewebmarket.com/" title="Outsourcing" class="outsourcing">Outsourcing</a> by FreelanceWebmarket.</p></div>
+
+
+ <div class="footer">&copy; 2007 <a href="index.html">Website.com</a>. Valid <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> &amp; <a
+href="http://validator.w3.org/check?uri=referer">XHTML</a>. <a href="http://templates.arcsin.se">Website template</a> by <a
+href="http://arcsin.se">Arcsin</a>
+
+
+ </div>
+
+</div>
+
+</body>
+
+</html>
