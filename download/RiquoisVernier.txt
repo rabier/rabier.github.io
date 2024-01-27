@@ -1,0 +1,53 @@
+Bonjour,
+
+- est-ce normal que, dans le calcul de paramètres de l'AR sélectionné 
+(en utilisant les formules du td3), je retrouve les mêmes valeurs que celles 
+données par le logiciel, mais du signe opposé ?
+
+
+je crois que dans la séance de tp, j'avais largement 
+insisté la dessus. N'avait-on pas tapé la commande help(ar) dans R ?
+
+
+
+- Pour la question 3 de la Partie 1, pour les prévisions, nous ne savons pas quelles 
+formules prendre... En tp,nous avons utilisé une formule, et dans le tp4, on a utilisé
+ une formule différente pour la prévision. Nous voudrions prendre les formules du TD4,
+ mais nous ne savons pas si ce sont les bonnes.
+
+Meme remarque, en td et en tp, on a obtenu exactement la même formule ! La réponse à votre question est dans la réponse précédente.
+
+
+-Dans la partie 2, concernant l'interprétation quant à la signification des 
+autorégressifs de la partie 1 etde la partie 2, qu'attendez-vous ?
+ Nous trouvons la question un peu floue...
+
+
+Il faut s'étendre sur ce qui est modélisé à travers ces 2 différents autorégréssifs.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+Bonjour monsieur,
+
+nous avons quelques questions concernant le TP noté que nous devons rendre pour le devoir : 
+
+- est-ce normal que, dans le calcul de paramètres de l'AR sélectionné (en utilisant les formules du td3), 
+je retrouve les mêmes valeurs que celles données par le logiciel, mais du signe opposé ?
+
+- Pour la question 3 de la Partie 1, pour les prévisions, nous ne savons pas quelles formules prendre... En tp, 
+nous avons utilisé une formule, et dans le tp4, on a utilisé une formule différente pour la prévision. 
+Nous voudrions prendre les formules du TD4, mais nous ne savons pas si ce sont les bonnes.
+
+-Dans la partie 2, concernant l'interprétation quant à la signification des autorégressifs de la partie 1 et 
+de la partie 2, qu'attendez-vous ? Nous trouvons la question un peu floue...
+
+
+
+Merci d'avance.
+
+Cordialement,
+
+Guillaume RIQUOIS & Matthieu VERNIER 
+IUP SID M1
+

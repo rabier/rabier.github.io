@@ -1,0 +1,414 @@
+###################################Question 1
+
+
+#je cree une fonction pour generer le processus autoregressif
+
+
+monautoreg=function(a) {
+
+x=rep(0,100)
+x[1]=rnorm(1)
+
+
+for (i in 2:100)
+{
+
+
+x[i]=a*x[i-1]+rnorm(1,0,sqrt(1-a^2))
+
+
+}
+
+return(x)
+
+}
+
+
+
+
+#je genere une serie chronologique
+a=0.8
+x=monautoreg(a)
+
+######################################Question2
+
+#je transforme x en serie chronologique a l aide de la commande ts 
+#(ainsi R cest qu il s'agit d' une serie chronologique)
+
+x<-ts(x)
+plot(x,col="orange")
+
+
+
+#remarquer que si je relance les commandes c est à dire
+x=monautoreg(a)
+x<-ts(x)
+plot(x,col="orange")
+
+
+#j observe une serie chronologique différente de la premiere observée
+#cela est du au fait que je travaille en aleatoire
+#chaque serie chronologique simulée correspond à une trajectoire du processus autoregressif 
+
+
+#a partir de maintenant je conserve toujours la meme serie chronologique x
+
+
+#question 3
+
+#autocovariances empiriques
+acf(x, type="covariance")
+
+
+#autocorrelations empirique
+acf(x, type="correlation")
+
+
+#dans le td1, exercice 2, on a trouvé que sigma(h)=a^{|h|} pour tout h entier relatif
+#De meme, on a trouvé rho(h)=a^{|h|}
+
+
+#en abscisse sur les 2 graphes, ce sont les h
+#et en ordonnee ce sont les sigmachapeau(h) pour le premier graphe
+#et les rhochapeau(h) pour le deuxieme graphe
+
+
+#ici a=0.8, donc on observe une decroissance exponentielle
+#car les h considérés sont positifs donc sigma(h)=a^{h}
+#or chacun sait que a^{h}=e^{h*log(a)}
+#du fait que a=0.8, log(a)=-0.22, d où a^{h}=e^{-0.22*h}
+
+#mais ne pas oublier que que lorsque j affiche les autocovariances empiriques
+#ou les autocorrelations empiriques ce ne sont que des estimations
+#donc on doit retrouver globalement le resultat théorique 
+
+
+
+
+
+#pour verifier ar(x)
+#et on regarde si la variance vaut bien 1-0.8^2
+#et l estimation du coeff
+
+
+
+
+#question 4
+
+
+#je vais creer une fonction erreur1
+#qui renvoie l erreur de prevision D pour la methode 1
+
+
+erreur1=function(a,x){
+d=0
+
+for (i in 1:99)
+
+{
+d= d + (a*x[i]-x[i+1])^2 
+}
+
+return(d)
+
+}
+
+
+
+#je calcule cette erreur
+erreur1(a,x)
+
+
+#je trouve 41.71 sur la simulation effectuee
+#attention vos resultats seront differents du mien car nous n'avons pas
+#generé la meme serie chronologique
+
+
+
+#erreur de prevision pour la methode 2 
+#je vais creer une fonction erreur2
+#qui renvoie l erreur de prevision D pour la methode 2
+#elle prend en parametre la constante de lissage alpha et la serie chronologique x
+
+
+erreur2=function(alpha,x) {
+d=0
+
+for (i in 1:99)
+
+{
+
+somme=0
+fin=i-1   
+   for (j in 0:fin) {
+
+somme=somme + alpha^j * x[i-j]
+
+}
+
+d=d+ (x[i+1]-(1-alpha)*somme)^2
+
+}
+
+
+return(d)
+
+}
+
+
+
+
+#je prends alpha=0.5 par exemple
+erreur2(0.5,x)
+#on trouve 52.72 sur la simulation effectuee
+#meme remarque que precedemment, vos resultats seront differents du mien !!!
+#car on ne travaille pas sur la meme serie chronologique
+
+
+
+#maintenant je vais chercher le alpha qui minimise l erreur
+#je vais calculer l erreur pour tous les alpha appartenant à ]0,1[
+
+
+#je cree un vecteur vectalpha qui contient tous les alpha
+vectalpha=seq(0.01,0.99,0.01)
+
+
+#vecterreur va contenir toutes les erreurs correspondant aux differents alpha
+vecterreur=erreur2(vectalpha,x)
+
+
+#ainsi vecterreur[1] correspond à l erreur pour un alpha=0.01
+#vecterreur[2] correspond à l erreur pour un alpha=0.02
+#et ainsi de suite
+
+
+#je dessine le graphe des erreurs en fonction de alpha
+plot(vectalpha,vecterreur)
+
+#je cherche le alpha qui minimise l erreur
+#utilisation de la commande R which.min
+which.min(vecterreur)
+
+
+#je trouve 10, c est a dire alpha=0.10
+
+#je regarde à quelle erreur cela correspond
+vecterreur[10]
+#je trouve 45.98
+
+
+#Conclusion :
+
+#en utilisant la methode 1, j ai trouvé une erreur de prevision de 41.71
+#en utilisant la methode 2, c est à dire le lissage exponentiel simple, 
+#et en choisissant le meilleur alpha, j ai trouvé une erreur de prevision de 45.98
+
+#Donc la meilleure methode de prévision est la méthode 1 !!!
+#Cela n'est pas choquant car en utilisant la methode 1, on utilise la prévision
+#pour un processus autoregressif (on le verra en td et en cours)
+#tandis qu'avec le lissage exponentiel simple, on ne sert pas du fait que notre
+#serie chronologique est une trajectoire du processus autoregressif
+#on ajuste simplement une constante à la série
+
+
+
+
+
+
+
+##################################question 5
+
+
+
+
+#cela se complique un tout petit peu ...
+
+
+#Dans cette question, je veux prouver que la méthode 1 est meilleure en moyenne 
+#que la méthode 2
+#car dans la question 4, je me suis juste interessé à une serie chronologique
+#et j ai trouvé que l erreur de prévision par la methode 1 était plus petite
+#que celle par la méthode 2
+#Mais si j'avais travaillé sur une autre série chronologique, aurais-je
+#trouvé les memes resultats ( a savoir méthode 1 meilleure que méthode 2)???
+
+
+
+#dans le td 2, on a calculé E[D] pour les 2 méthodes mais pour un alpha fixé
+#attention, je dois travailler à alpha fixé ici
+# cest à dire que je vais comparer la méthode 1 avec la méthode 2 utilisant un alpha donné
+#ce alpha ne changera pas en fonction de ma série chronologique simulée !!
+
+
+
+#je prendrai alpha=0.10 dans tout ce qui suit
+#vous pouvez prendre le alpha que vous voulez
+#moi j ai pris le alpha que j ai trouvé a la question 4
+
+
+
+
+#je crée une fonction esperance2 qui me renvoie E[D] pour la méthode 2
+#car on a vu en td que la formule est assez compliquée
+
+
+
+
+esperance2=function(N,a,alpha)
+{
+
+terme1=(N-1)*( 1 + (1-alpha)^2/(1-alpha^2) - 2*a*(1-alpha)/(1-a*alpha) )
+
+terme2= -( (1-alpha)^2/(1-alpha^2) )*(alpha^2)*(1-alpha^(2*N-2))/(1-alpha^2)
+
+terme4= ( 2*(1-alpha)*a^2*alpha/(1-a*alpha) ) * ( 1-(a*alpha)^(N-1) )/(1-a*alpha)
+
+j=0
+fin1=N-1
+d=0
+
+for ( n in 1:fin1)
+ {
+
+    fin2=n-1
+    fin3=n
+
+
+    for (i in 0:fin2) 
+      {
+
+          debut=i+1     
+          for (j in debut:fin3)
+
+             {
+
+              d= d + (alpha^(2*n-i-j))*a^(j-i) 
+
+             }
+              
+      
+      }
+
+
+  }
+
+
+terme3=2*(1-alpha)^2*d
+
+result=terme1+terme2+terme3+terme4
+
+
+return(result)
+
+}
+
+
+
+
+#dans notre cas la longueur de la serie chronologique est 100
+N=100
+esperance2(N,a,0.10) 
+#je trouve comme esperance 39.244
+
+
+#a noter que je peux verifier ce resultat en simulant 
+#un grand nombre de serie chronologiques et en calculant pour chacune d elle 
+#l erreur de prévision D, et apres je fais la moyenne sur les D
+#J applique donc la loi des grands nombres
+#et cela doit tendre vers 39.244
+
+
+#Vérifions le
+
+
+alpha=0.10
+tab2=rep(0,1000)
+
+for (i in 1:1000)
+{
+x=monautoreg(a)
+
+tab2[i]=erreur2(alpha,x)
+
+}
+
+mean(tab2)
+
+
+#je trouve 39.20 sur mes simulations
+#Cela marche donc bien, je suis proche de 39.244
+
+
+
+#Maintenant je fais la meme chose pour la methode 1
+
+N=100
+
+esperance1=(N-1)*(1-a^2)
+
+#on trouve 35.64 pour lesperance de l erreur de prevision pour la methode 1
+
+
+
+##verification de la loi des grands nombres
+
+
+tab1=rep(0,1000)
+
+for (i in 1:1000)
+{
+x=monautoreg(a)
+
+tab1[i]=erreur1(a,x)
+
+}
+
+mean(tab1)
+
+
+#je trouve 35.54 sur mes simulations
+#cela marche encore tres bien
+
+
+
+#####Je clarifie les notations a partir de maintenant
+
+#D1 sera l erreur de prevision pour la methode 1
+#D2 sera l erreur de prevision pour la methode 2
+
+#je note DIFF=D2-D1 la difference entre D2 et D1
+#si E[DiFF]>0 alors cela signifiera que la méthode 1 est meilleure
+#en moyenne qua le méthode 2
+
+
+#E[Diff]=E[D2]-E[D1]=39.244-35.64=3.604
+
+#Cela signifie que la méthode 1 est meilleur en moyenne que la méthode 2
+
+
+
+#je peux encore verifier par la loi des grands nombres !!!
+#je simule 1000 séries chrono et pour chacune d elles je calcule D2-D1
+
+
+tab=rep(0,1000)
+
+for (i in 1:1000)
+{
+x=monautoreg(a)
+
+tab[i]=erreur2(alpha,x)-erreur1(a,x)
+
+}
+
+mean(tab)
+
+#je trouve 3.47 sur mes simulations
+
+
+
+
+
+
+

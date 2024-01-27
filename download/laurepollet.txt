@@ -1,0 +1,35 @@
+Bonjour,
+
+attention, il y a une contrainte sur la somme des sm. Vous l'avez gérée dans votre code.
+Cependant, les équivalents à 0 dans l'énoncé concernant les résidus ne doivent pas être vus
+comme une contrainte.
+Ils sont juste présents pour vous aider à trouver les estimateurs pour la question 1 . 
+
+Cordialement
+
+Charles-Elie Rabier
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Bonjour,
+
+Nous avons commencé à travailler sur le TP3 de Séries Chronologiques.
+ Nous sommes plusieurs groupes à avoir comparé nos résultats et avons les memes erreurs.
+ Nous avons donc décidé de regrouper nos questions.
+ Nous bloquons sur la partie 1 question 2, lorsqu'il faut vérifier les contraintes 
+sur les résidus. Nous n'obtenons pas des sommes de colonnes égales à 0,
+ nous avons plusieurs pistes :
+- est ce que le problème pourrait venir du calcul de sm ?
+- faut-il faire comme dans le TP précédent et calculer la somme des résidus sur les 11 premieres colonnes et mettre le residus de la 12ieme colonne egale à -sum(sm) des 11 premieres colonnes. 
+
+Cordialement, 
+Anne-Laure LEOMANT
+Elodie STACHINO
+Florent LASSELIN
+Laure POLLET
+Lucie DAUVIN
+Stephanie POULAIN
+
+
+

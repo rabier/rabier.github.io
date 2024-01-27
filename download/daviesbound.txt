@@ -1,0 +1,42 @@
+#all these functions are Splus functions
+
+
+#this function calculates Davies bound
+#for the process studied with Allan Genz on [L,U]
+#(the chi square process e^(-h2/2))
+#d is the number of degreesof freedom
+#c critical value
+
+
+davies_function(L,U,d,c){
+terme1_(U-L)*c^((d-1)/2)*exp(-c/2)*pi^(-0.5)*2^((1-d)/2)/gamma(d/2)
+terme2_1-pchisq(c, d, ncp=0)
+borne_terme1+terme2
+borne}
+
+
+
+
+
+
+
+#this function calculates the upper bound for the critical value
+#for a given level alpha
+
+criticdavies_function(L,U,d,alpha){
+c_0
+borne_1
+while (borne>alpha)
+{
+c_c+0.01
+borne_davies(L,U,d,c)
+}
+d_c
+d
+}
+
+
+
+criticdavies(0,10,2,0.05)
+criticdavies(0,5,2,0.05)
+

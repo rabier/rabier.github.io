@@ -1,0 +1,160 @@
+x<-c(co2)
+donnees<-x[337:468]
+plot(ts(donnees))
+
+
+#calcul de c1
+
+
+term1=0
+term2=0
+term3=0
+
+for (a in 1:11)
+{
+
+debut=12*(a-1)+1
+fin=12*a
+
+term1=term1 - mean(donnees[debut:fin])
+
+term2=term2 + (12*(a-1)+13/2)*mean(donnees[debut:fin])
+
+term3=term3 + (12*(a-1)+13/2)^2
+
+
+
+}
+
+
+c1= ( term1 +(11/731.5)*term2   ) / (-731.5 + 11*term3/731.5 )
+
+c2=(term2 - c1*term3)/731.5
+
+
+
+#je trouve c1=0.119  et c2=348.65
+
+tab=matrix(donnees,ncol=12,byrow=T)
+ympoint=apply(tab,2,mean)
+
+
+s=rep(0,12)
+
+for (m in  1:12)
+{
+
+s[m]=ympoint[m]-c2-c1*(m+60)
+
+}
+
+
+
+#à ce stade je n ai pas encore modelisé les residus
+#je regarde mes predictions
+
+
+pred<-rep(0,length(donnees))
+
+for (i in 1:132) {
+pred[i]=c1*i+c2
+}
+
+
+q=rep(s,11)
+#je rajoute l effet mois
+pred=pred+q
+
+
+plot(ts(donnees))
+
+lines(pred,lty=2,col="green")
+
+
+###je calcule lerreur de prevision 
+D=0
+
+for (i in 3:132) {
+D= D + (pred[i]-donnees[i])^2 
+}
+
+D/130
+
+#on obtient 0.306
+
+
+
+
+
+##########je vais maintenant travailler sur les residus
+#je calcule la serie des residus
+
+
+residus<-rep(0,length(donnees))
+
+
+for (i in 1:132) {
+residus[i]=donnees[i]-pred[i]
+}
+
+
+
+
+
+#autocovariance
+acf(residus)
+
+
+#autocorrelation partielle
+pacf(residus)
+
+
+
+
+#modelisation autoregressive
+ar(residus)
+
+
+#c est un ar2
+
+
+
+#prevision 133
+prevision=c2+133*c1+s[1]+0.7230*residus[132] + 0.1581*residus[131]
+
+
+
+
+
+
+
+#calcul de l erreur de prevision a horizon 1
+prev=rep(0,132)
+
+
+for (i in 3:132)
+{
+prev[i]=c2 + c1*i + 0.7230*residus[i-1] + 0.1581*residus[i-2] 
+}
+
+
+vectmois=rep(s,11)
+
+prev=prev+vectmois
+
+erreur=rep(0,132)
+
+erreur=prev-donnees
+erreur[1]=0
+erreur[2]=0
+
+D=sum(erreur^2)/130
+
+#on trouve D=0.07 alors qu avant on trouvait 0.306 (quand on n'avait pas modélisé les résidus)
+
+
+#on peut voir sur les graphes l avantage de modéliser les résidus
+plot(ts(donnees))
+
+lines(pred,lty=2,col="green")
+lines(c(3:132),prev[3:132],lty=2,col="orange")
